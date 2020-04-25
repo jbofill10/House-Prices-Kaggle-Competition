@@ -39,7 +39,6 @@ def housing_eda(train_df):
 
     make_heat_map(numerical_corr, [15,10], 'Correlation Between Numerical Features to Target Label', 'NumericalCorr', annot=False)
 
-
     numerical_corr = train_df[['OverallQual', 'GrLivArea', 'GarageCars', 'GarageArea', 'YearBuilt', 'YearRemodAdd',
                                          'MasVnrArea', 'TotalBsmtSF', '1stFlrSF', 'FullBath', 'TotRmsAbvGrd', 'Fireplaces',
                                          'GarageYrBlt', 'LotArea', 'BsmtUnfSF', 'SalePrice']].copy()

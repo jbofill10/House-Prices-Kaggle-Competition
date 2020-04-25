@@ -68,6 +68,4 @@ Due to the dummies call, the dataframe has 209 columns. So I will do two heat ma
 
 ![image](Charts/CategoricalCorr_Col_101_209.png)  
 
-I am not going to write out the features that are important yet, too many to go through. Instead I will take all features I currently have and use XGBRegression to get feature importance.
-
-
+I am not going to write out the features that are important yet, too many to go through. Instead I will take all features I currently have and use RFECV and XGBRegression to get feature importance.
