@@ -1,7 +1,7 @@
 import pandas as pd
 import DataCleaning
-from machine_learning import Preprocessing, FindBestFeatures
-from machine_learning.Models import XGBoost
+from machine_learning import Preprocessing, XGBoostParamTune
+from machine_learning.Models import XGBoost, SVR, RFR
 from EDA import HousingEDA
 
 
@@ -11,17 +11,22 @@ def main():
 
     test_df = pd.read_csv('Data/house_prices/test.csv')
 
-    train_df, test_df, test_id = DataCleaning.clean_data(train_df, test_df)
+    train_df, test_df, test_id, train_test_df, target = DataCleaning.clean_data(train_df, test_df)
 
-    HousingEDA.housing_eda(train_df)
+    #HousingEDA.housing_eda(train_df)
 
-    train_scaled, x_target, test_scaled = Preprocessing.preprocess(train_df, test_df)
+    train_df = train_test_df.iloc[:len(train_df)]
+    test_df = train_test_df.iloc[len(train_df):, :]
 
-    model, best_feats = FindBestFeatures.find_features(train_scaled, x_target)
+    train_scaled, test_scaled = Preprocessing.preprocess(train_test_df, train_df, test_df)
 
-    test_scaled = test_scaled[[i for i in best_feats]]
+    #model = XGBoostParamTune.param_tune(train_scaled, target)
 
-    XGBoost.run(model, test_scaled, test_id)
+    SVR.runSVM(train_scaled, target)
+
+    RFR.runRFR(train_scaled, target)
+
+    #XGBoost.run(model, test_scaled, test_id)
 
 
 if __name__ == '__main__':
