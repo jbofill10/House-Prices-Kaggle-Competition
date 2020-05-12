@@ -1,6 +1,7 @@
 # House-Prices-Kaggle-Competition
 
-Predicting the prices of houses from a data set considering of 80 features and 1460 records
+Predicting the prices of houses from a data set considering of 80 features and 1460 records  
+
 I created a Stacking Regressor consisting of XGBoost, Random Forest Regressor, Support Vector Regressior as my first layer of estimators and then feeding those predictions into a Lasso Regression meta model to predict the outcomes on the test data set.
 
 My original submission that clocked me in the top 39% was only using XGBoost. After submitting the results from the ensembled model, I stand now at the top 19%.
