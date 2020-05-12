@@ -28,7 +28,7 @@ def paramTune(train_scaled, target, model):
         'max_features': ['auto', 'sqrt'],
         'min_samples_leaf': [1, 2, 4],
         'min_samples_split': [2, 5, 10],
-        'oob_score': [True, False],
+        'oob_score': [True, False]
 
     }
 

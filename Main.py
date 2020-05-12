@@ -2,6 +2,7 @@ import pandas as pd
 import DataCleaning
 from machine_learning import Preprocessing, XGBoostParamTune
 from machine_learning.Models import XGBoost, SVR, RFR
+from machine_learning.Stacking import Stacking
 from EDA import HousingEDA
 
 
@@ -22,9 +23,11 @@ def main():
 
     #model = XGBoostParamTune.param_tune(train_scaled, target)
 
-    SVR.runSVM(train_scaled, target)
+    #SVR.runSVM(train_scaled, target)
 
-    RFR.runRFR(train_scaled, target)
+    #RFR.runRFR(train_scaled, target)
+
+    Stacking.init_stacking(train_scaled, test_scaled, target, test_id)
 
     #XGBoost.run(model, test_scaled, test_id)
 
