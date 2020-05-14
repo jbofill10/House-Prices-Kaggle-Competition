@@ -1,16 +1,33 @@
 # House-Prices-Kaggle-Competition
 
-Predicting the prices of houses from a data set considering of 80 features and 1460 records  
+Predicting the prices of houses from a data set considering of 80 features and 1460 records
 
-I created a Stacking Regressor consisting of XGBoost, Random Forest Regressor, Support Vector Regressior as my first layer of estimators and then feeding those predictions into a Lasso Regression meta model to predict the outcomes on the test data set.
+# Competition Results
 
-My original submission that clocked me in the top 39% was only using XGBoost. After submitting the results from the ensembled model, I stand now at the top 19%.
+Using Stacking with two layers of models, I stand at the top 18% of the competition
 
 The evaluation metric used was RMSE.
 
+### Solo Model
+
 XGBoost Solo had a RMSE of 0.13578
 
+### Stacking  
+
+I created a Stacking Regressor consisting of XGBoost, Random Forest Regressor, Support Vector Regressior as my first layer of estimators and then feeding those predictions into a Lasso Regression meta model to predict the outcomes on the test data set.
+
 The ensembled model had a RMSE of 0.12129.
+
+#### Improving Stacking Regressor
+
+I decided to add one more model to the first layer of the ensemble model, which was LightGBM. I tuned hyperparmeters using the train data set with CV and a grid search.
+
+The score of the model increased by a small margin, but still an improvement.
+
+The ensembled model had a RMSE of 0.12076.
+
+### Blending
+
 
 # EDA
 Let's look at the target variable first

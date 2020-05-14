@@ -1,11 +1,8 @@
 from sklearn.ensemble import RandomForestRegressor, StackingRegressor
 from sklearn.svm import SVR
 from xgboost import XGBRegressor
-from sklearn.preprocessing import RobustScaler
 from sklearn.linear_model import LassoCV
-
-
-from machine_learning import Preprocessing
+from lightgbm import LGBMRegressor
 
 import numpy as np
 import pandas as pd
@@ -14,7 +11,6 @@ import pickle
 
 
 def init_stacking(train_scaled, test_scaled, target, test_id):
-
     if not os.path.isfile('Data/pickles/models/pancake_stack'):
 
         estimators = [
@@ -30,7 +26,11 @@ def init_stacking(train_scaled, test_scaled, target, test_id):
                                      reg_alpha=0.001, reg_lambda=1, verbosity=2)),
 
             ('svr', SVR(C=5, cache_size=200, coef0=0.0, degree=1, epsilon=0.01, gamma='auto',
-                        kernel='poly', max_iter=-1, shrinking=True, tol=0.001, verbose=3))
+                        kernel='poly', max_iter=-1, shrinking=True, tol=0.001, verbose=3)),
+
+            ('lgbm', LGBMRegressor(boosting_type='gbdt', lambda_l1=0,
+                                    lambda_l2=0.1, learning_rate=0.1,
+                                    max_depth=0, num_leaves=10))
         ]
 
         stack = StackingRegressor(estimators=estimators, final_estimator=LassoCV(cv=5), verbose=3)
@@ -51,4 +51,4 @@ def init_stacking(train_scaled, test_scaled, target, test_id):
 
     submission_df = pd.DataFrame(y_pred, index=test_id, columns=['SalePrice'])
 
-    submission_df.to_csv('Data/Submission/S5.csv')
+    submission_df.to_csv('Data/Submission/S6.csv')

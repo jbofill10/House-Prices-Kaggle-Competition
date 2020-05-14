@@ -25,11 +25,11 @@ def main():
 
     #SVR.runSVM(train_scaled, target)
 
-    LightGBM.run_lightgbm(train_scaled, target)
+    #LightGBM.run_lightgbm(train_scaled, target)
 
     #RFR.runRFR(train_scaled, target)
 
-    #Stacking.init_stacking(train_scaled, test_scaled, target, test_id)
+    Stacking.init_stacking(train_scaled, test_scaled, target, test_id)
 
     #XGBoost.run(model, test_scaled, test_id)
 

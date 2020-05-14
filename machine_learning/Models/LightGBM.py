@@ -6,7 +6,6 @@ import pickle
 
 
 def run_lightgbm(train_scaled, target):
-
     if not os.path.isfile('Data/pickles/models/lightgbm_pickle'):
         model = LGBMRegressor(num_threads=8, metric='rmse')
 
@@ -20,7 +19,7 @@ def run_lightgbm(train_scaled, target):
 
         }
 
-        grid = GridSearchCV(model, param_grid=params, verbose=3)
+        grid = GridSearchCV(model, param_grid=params, cv=3, verbose=3)
 
         grid.fit(train_scaled, target)
 
@@ -32,3 +31,5 @@ def run_lightgbm(train_scaled, target):
     else:
         with open('Data/pickles/models/lightgbm_pickle', 'rb') as file:
             lightgbm_model = pickle.load(file)
+
+    '''Best params: [boosting_type='gbdt', lambda_l1=0, lambda_l2=0,1, learning_rate=0.1, max_depth=0, num_leaves=10]'''
