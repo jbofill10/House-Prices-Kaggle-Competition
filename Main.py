@@ -2,7 +2,8 @@ import pandas as pd
 import DataCleaning
 from machine_learning import Preprocessing, XGBoostParamTune
 from machine_learning.Models import XGBoost, SVR, RFR, LightGBM
-from machine_learning.Stacking import Stacking
+from machine_learning.Ensembling.Stacking import Stacking
+from machine_learning.Ensembling.Blending import WeightedAverage
 from EDA import HousingEDA
 
 
@@ -29,9 +30,11 @@ def main():
 
     #RFR.runRFR(train_scaled, target)
 
-    Stacking.init_stacking(train_scaled, test_scaled, target, test_id)
+    #Stacking.init_stacking(train_scaled, test_scaled, target, test_id)
 
     #XGBoost.run(model, test_scaled, test_id)
+
+    WeightedAverage.weighted_avg(train_scaled, test_scaled, target, test_id)
 
 
 if __name__ == '__main__':

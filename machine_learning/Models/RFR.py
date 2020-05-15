@@ -29,7 +29,6 @@ def paramTune(train_scaled, target, model):
         'min_samples_leaf': [1, 2, 4],
         'min_samples_split': [2, 5, 10],
         'oob_score': [True, False]
-
     }
 
     grid = GridSearchCV(model, param_grid=params, cv=3, verbose=3, n_jobs=-1)

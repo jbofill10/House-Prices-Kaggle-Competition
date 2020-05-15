@@ -29,8 +29,8 @@ def init_stacking(train_scaled, test_scaled, target, test_id):
                         kernel='poly', max_iter=-1, shrinking=True, tol=0.001, verbose=3)),
 
             ('lgbm', LGBMRegressor(boosting_type='gbdt', lambda_l1=0,
-                                    lambda_l2=0.1, learning_rate=0.1,
-                                    max_depth=0, num_leaves=10))
+                                   lambda_l2=0.1, learning_rate=0.1,
+                                   max_depth=0, num_leaves=10))
         ]
 
         stack = StackingRegressor(estimators=estimators, final_estimator=LassoCV(cv=5), verbose=3)
