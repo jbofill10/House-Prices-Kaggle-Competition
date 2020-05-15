@@ -4,7 +4,7 @@ Predicting the prices of houses from a data set considering of 80 features and 1
 
 # Competition Results
 
-Using Stacking with two layers of models, I stand at the top 18% of the competition
+Using Stacking with a layer of 4 weak learners and a meta model, I stand at the top 18% of the competition
 
 The evaluation metric used was RMSE.
 
