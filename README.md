@@ -26,8 +26,22 @@ The score of the model increased by a small margin, but still an improvement.
 
 The ensembled model had a RMSE of 0.12076.
 
-### Blending
+### Blending - Weighted Averages
 
+I used the same models as I did for the stacking approach.
+
+I ran a grid search of weights 0.1 - 1 to evaluate which weight combination correspended with the best RMSE.
+
+The weights that acheived the best score were:
+
+RFR: 0.1  
+XGBoost: 0.7  
+SVR: 0.1  
+LightGBM 0.1  
+
+On the submission to kaggle, the RMSE was: 0.12811
+
+So overall, not an improvement from stacking, but the score did improve considerably more than just using XGBoost alone.
 
 # EDA
 Let's look at the target variable first
