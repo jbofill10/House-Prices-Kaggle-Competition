@@ -1,7 +1,7 @@
 import pandas as pd
 import DataCleaning
 from machine_learning import Preprocessing, XGBoostParamTune
-from machine_learning.Models import XGBoost, SVR, RFR, LightGBM
+from machine_learning.Models import XGBoost, SVR, RFR, LightGBM, Lasso
 from machine_learning.Ensembling.Stacking import Stacking
 from machine_learning.Ensembling.Blending import WeightedAverage
 from EDA import HousingEDA
@@ -33,6 +33,8 @@ def main():
     #Stacking.init_stacking(train_scaled, test_scaled, target, test_id)
 
     #XGBoost.run(model, test_scaled, test_id)
+
+    #Lasso.run_lasso(train_scaled, target)
 
     WeightedAverage.weighted_avg(train_scaled, test_scaled, target, test_id)
 

@@ -4,6 +4,7 @@ from lightgbm import LGBMRegressor
 from xgboost import XGBRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import Lasso
 
 import os
 import pickle
@@ -20,21 +21,23 @@ def weighted_avg(train_scaled, test_scaled, target, test_id):
                                 min_impurity_split=None, min_samples_leaf=4,
                                 min_samples_split=2, min_weight_fraction_leaf=0.0,
                                 n_estimators=700, n_jobs=-1, oob_score=True,
-                                random_state=None, verbose=3, warm_start=False)
+                                random_state=None, warm_start=False)
 
     xgboost = XGBRegressor(learning_rate=0.08, max_depth=3, n_estimators=500, n_jobs=-1,
-                           reg_alpha=0.001, reg_lambda=1, verbosity=2)
+                           reg_alpha=0.001, reg_lambda=1)
 
     svr = SVR(C=5, cache_size=200, coef0=0.0, degree=1, epsilon=0.01, gamma='auto',
-              kernel='poly', max_iter=-1, shrinking=True, tol=0.001, verbose=3)
+              kernel='poly', max_iter=-1, shrinking=True, tol=0.001)
 
     lgbm = LGBMRegressor(boosting_type='gbdt', lambda_l1=0,
                          lambda_l2=0.1, learning_rate=0.1,
                          max_depth=0, num_leaves=10, n_jobs=-1)
 
+    lasso = Lasso(alpha=0.01)
+
     if not os.path.isfile('Data/pickles/weighted_combs'):
 
-        estimators = {'rfr': rfr, 'xgboost': xgboost, 'svr': svr, 'lgbm': lgbm}
+        estimators = {'rfr': rfr, 'xgboost': xgboost, 'svr': svr, 'lgbm': lgbm, 'lasso': lasso}
         start = time.time()
         scores = find_weights(estimators, train_scaled, target)
         end = time.time() - start
@@ -47,7 +50,6 @@ def weighted_avg(train_scaled, test_scaled, target, test_id):
         with open('Data/pickles/weighted_combs', 'rb') as file:
             scores = pickle.load(file)
 
-    print(scores)
     weight_comb = ''
     rmse_score = sys.maxsize
 
@@ -57,6 +59,7 @@ def weighted_avg(train_scaled, test_scaled, target, test_id):
             rmse_score = key
 
     best_weights = weight_comb.split(',')
+    print(rmse_score)
     print(weight_comb)
 
     '''x_train, x_test, y_train, y_test = train_test_split(train_scaled, target)
@@ -70,18 +73,23 @@ def weighted_avg(train_scaled, test_scaled, target, test_id):
     xgboost.fit(train_scaled, target)
     svr.fit(train_scaled, target)
     lgbm.fit(train_scaled, target)
+    lasso.fit(train_scaled, target)
 
     rfr_y_pred = np.expm1(rfr.predict(test_scaled))
     xgboost_y_pred = np.expm1(xgboost.predict(test_scaled))
     svr_y_pred = np.expm1(svr.predict(test_scaled))
     lgbm_y_pred = np.expm1(lgbm.predict(test_scaled))
+    lasso_y_pred = np.expm1(lasso.predict(test_scaled))
 
-    y_pred = (rfr_y_pred * float(best_weights[0])) + (xgboost_y_pred * float(best_weights[1])) + \
-             (svr_y_pred * float(best_weights[2])) + (lgbm_y_pred * float(best_weights[3]))
+    y_pred = (rfr_y_pred * float(best_weights[0])) \
+             + (xgboost_y_pred * float(best_weights[1])) \
+             + (svr_y_pred * float(best_weights[2])) \
+             + (lgbm_y_pred * float(best_weights[3])) \
+             + (lasso_y_pred * float(best_weights[4]))
 
     submission_df = pd.DataFrame(y_pred, index=test_id, columns=['SalePrice'])
 
-    submission_df.to_csv('Data/Submission/S8.csv')
+    submission_df.to_csv('Data/Submission/S9.csv')
 
 
 def find_weights(estimators, train_scaled, target):
@@ -93,11 +101,16 @@ def find_weights(estimators, train_scaled, target):
         model.fit(x_train, y_train)
 
     for i in weights:
+        print(i)
         for j in weights:
             for k in weights:
                 for l in weights:
-                    y_pred = (estimators['rfr'].predict(x_test) * i) + (estimators['xgboost'].predict(x_test) * j) + \
-                             (estimators['svr'].predict(x_test) * k) + (estimators['lgbm'].predict(x_test) * l)
-                    scores[np.sqrt(mean_squared_error(y_test, y_pred))] = f'{i},{j},{k},{l}'
+                    for m in weights:
+                        y_pred = (estimators['rfr'].predict(x_test) * i) \
+                                 + (estimators['xgboost'].predict(x_test) * j) \
+                                 + (estimators['svr'].predict(x_test) * k) + (estimators['lgbm'].predict(x_test) * l) \
+                                 + (estimators['lasso'].predict(x_test) * m)
+
+                        scores[np.sqrt(mean_squared_error(y_test, y_pred))] = f'{i},{j},{k},{l},{m}'
 
     return scores

@@ -32,7 +32,7 @@ I used the same models as I did for the stacking approach.
 
 I ran a grid search of weights 0.1 - 1 to evaluate which weight combination correspended with the best RMSE.
 
-The weights that acheived the best score were:
+The weights that achieved the best score was:
 
 RFR: 0.1  
 XGBoost: 0.7  
@@ -42,6 +42,24 @@ LightGBM 0.1
 On the submission to kaggle, the RMSE was: 0.12811
 
 So overall, not an improvement from stacking, but the score did improve considerably more than just using XGBoost alone.
+
+#### Blending - Weighted Averages Improved
+
+For some reason,  I forgot to include Lasso regression in the original ensemble.
+
+I tuned alpha with a grid search and CV -- alpha is best at 0.01
+
+Then I tuned weights with a grid search  
+
+The weights that achieved the best score was:  
+
+RFR: 0.1  
+XGBoost: 0.1  
+SVR: 0.6  
+LightGBM: 0.1  
+Lasso: 0.1  
+
+It is interesting now that aftering adding in Lasso, XGBoost does not have much effect on a result as it did in the last ensemble. Instead it is the case for SVR now.
 
 # EDA
 Let's look at the target variable first
