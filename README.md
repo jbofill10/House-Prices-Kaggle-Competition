@@ -51,6 +51,10 @@ I tuned alpha with a grid search and CV -- alpha is best at 0.01
 
 Then I tuned weights with a grid search  
 
+On the submission to Kaggle, the score was: 0.11885
+
+This is a huge improvement! I moved up 4% on the leaderboard, now standing at the top 14%.
+
 The weights that achieved the best score was:  
 
 RFR: 0.1  
